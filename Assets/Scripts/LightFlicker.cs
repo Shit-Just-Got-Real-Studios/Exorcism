@@ -65,8 +65,8 @@ public class LightFlicker : MonoBehaviour {
 			lampLight.SetActive(true);
 			lampLightSpot.SetActive(true);
 			FlyingDemonModel.SetActive(true);
-			lt.intensity = 5.5f;
-			lt1.intensity = 5.5f;
+			lt.intensity = 6f;
+			lt1.intensity = 6f;
 		}
 
 		if (teleport && !hit) {
@@ -106,8 +106,8 @@ public class LightFlicker : MonoBehaviour {
 			//lt1.intensity = amplitude;
 
 			if (Mathf.Abs(amplitude) >= (0.5f)) {
-				lt.intensity = 5.5f;
-				lt1.intensity = 5.5f;
+				lt.intensity = 7f;
+				lt1.intensity = 7f;
 			} else {
 				lt.intensity = 0f;
 				lt1.intensity = 0f;
@@ -156,8 +156,8 @@ public class LightFlicker : MonoBehaviour {
 			//lt1.intensity = amplitude;
 
 			if (Mathf.Abs(amplitude) >= (0.5f)) {
-				lt.intensity = 5.5f;
-				lt1.intensity = 5.5f;
+				lt.intensity = 7f;
+				lt1.intensity = 7f;
 			} else {
 				lt.intensity = 0f;
 				lt1.intensity = 0f;
@@ -170,7 +170,7 @@ public class LightFlicker : MonoBehaviour {
 				hit = true;
 		}
 		else if (!teleport && !hit && flicker) {
-			lt.intensity = 5.5f;
+			lt.intensity = 5f;
 			counter = 0;
 			hit = false;
 		}
