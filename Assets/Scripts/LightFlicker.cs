@@ -27,7 +27,7 @@ public class LightFlicker : MonoBehaviour {
 	public float duration = 1.0F;
 	private AudioSource laugh;
 	public bool teleport = false;
-	public float counter = 0f;
+	private float counter = 0f;
 	private bool hit = false;
 	void Start() {
 		laugh = GetComponent<AudioSource> ();
@@ -36,7 +36,7 @@ public class LightFlicker : MonoBehaviour {
 	void Update () {
 		float time1 = Time.timeSinceLevelLoad;
 		if (time1 > 4.0f && time1 < 12.0f) {
-			PossessedModel.transform.Translate (Vector3.up * -Time.deltaTime * 1.2f);
+			PossessedModel.transform.Translate (Vector3.up * -Time.deltaTime * 1.5f);
 		}
 		if (Time.timeSinceLevelLoad >= 4.0f && Time.timeSinceLevelLoad <= 12.0f) {
 			if (laugh.isPlaying) {
@@ -70,40 +70,9 @@ public class LightFlicker : MonoBehaviour {
 		}
 
 		if (teleport && !hit) {
-			    flicker = true;
-				/*
-				float phi = Time.timeSinceLevelLoad / duration * 2 * Mathf.PI;
-				float amplitude = Mathf.Cos (phi);
-				while (counter < 4) {
-					if (Mathf.Abs (amplitude) >= (0.5f)) {
-						lt.intensity = 6f;
-						lt1.intensity = 6f;
-					} else {
-						lt.intensity = 0f;
-						lt1.intensity = 0f;
-					}
-					counter++;
-				}
-
-				
-				while (counter < 20) {
-					lt.intensity = 0f;
-					lt1.intensity = 0f;
-					counter++;
-				}
-				lt.intensity = 5.5f;
-				lt1.intensity = 5.5f;
-				flicker = false;
-
-			while (counter < 2.0f) {
-				lt.intensity = 0.0f;
-				counter += Time.fixedDeltaTime;
-			}
-			*/
+			flicker = true;
 			float phi = Time.timeSinceLevelLoad / duration * Mathf.PI;
 			float amplitude = Mathf.Sin (phi*flickeringFrequency);
-			//lt.intensity = amplitude;
-			//lt1.intensity = amplitude;
 
 			if (Mathf.Abs(amplitude) >= (0.5f)) {
 				lt.intensity = 7f;
@@ -121,39 +90,8 @@ public class LightFlicker : MonoBehaviour {
 		}
 		if (hit) {
 			flicker = true;
-			/*
-				float phi = Time.timeSinceLevelLoad / duration * 2 * Mathf.PI;
-				float amplitude = Mathf.Cos (phi);
-				while (counter < 4) {
-					if (Mathf.Abs (amplitude) >= (0.5f)) {
-						lt.intensity = 6f;
-						lt1.intensity = 6f;
-					} else {
-						lt.intensity = 0f;
-						lt1.intensity = 0f;
-					}
-					counter++;
-				}
-
-				
-				while (counter < 20) {
-					lt.intensity = 0f;
-					lt1.intensity = 0f;
-					counter++;
-				}
-				lt.intensity = 5.5f;
-				lt1.intensity = 5.5f;
-				flicker = false;
-
-			while (counter < 2.0f) {
-				lt.intensity = 0.0f;
-				counter += Time.fixedDeltaTime;
-			}
-			*/
 			float phi = Time.timeSinceLevelLoad / duration * Mathf.PI;
 			float amplitude = Mathf.Sin (phi*flickeringFrequency);
-			//lt.intensity = amplitude;
-			//lt1.intensity = amplitude;
 
 			if (Mathf.Abs(amplitude) >= (0.5f)) {
 				lt.intensity = 7f;
@@ -171,30 +109,13 @@ public class LightFlicker : MonoBehaviour {
 		}
 		else if (!teleport && !hit && flicker) {
 			lt.intensity = 5f;
+			lt1.intensity = 5f;
 			counter = 0;
 			hit = false;
 		}
 	}
 
 	void Flicker() {
-		/*
-		float counter = 0f;
-		flicker = true;
-		while (counter < 3f) {
-			float phi = Time.timeSinceLevelLoad / duration * 2 * Mathf.PI;
-			float amplitude = Mathf.Cos (phi * 2f);
-			if (Mathf.Abs(amplitude) >= (0.5f)) {
-				lt.intensity = 5.5f;
-				lt1.intensity = 5.5f;
-			} else {
-				lt.intensity = 0f;
-				lt1.intensity = 0f;
-			}
-			counter += Time.fixedDeltaTime;
-			Debug.Log (counter);
-		}
-		flicker = false;
-		*/
 		teleport = true;
 	}
 

@@ -15,15 +15,16 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Collider))]
 public class Teleport : MonoBehaviour {
 
-	[SerializeField]
-	private float distanceFromPlayerWhileAttacking;
+  [SerializeField]
+  private float distanceFromPlayerWhileAttacking;
 
-	[SerializeField]
-	private float demonSpawningSpeed;
+  [SerializeField]
+  private float demonSpawningSpeed;
 
   [SerializeField]
   private GameObject player;
@@ -37,6 +38,8 @@ public class Teleport : MonoBehaviour {
   [SerializeField]
   private GameObject flyingDemonModel;
 
+  [SerializeField]
+  private GameObject bloodSplat;
 
   private Vector3 startingPosition;      
   public Transform[] spawnPoints;  
@@ -46,6 +49,8 @@ public class Teleport : MonoBehaviour {
   private int numOfTries = 5;
   public bool attacking = false;
   private int counter = 1;
+  //private int animCounter = 0;
+
   void Start() {
 		int spawnPointIndex = Random.Range (0, spawnPoints.Length);
 		transform.position = (spawnPoints[spawnPointIndex].position);
@@ -59,9 +64,12 @@ public class Teleport : MonoBehaviour {
   void FixedTimeBeforeTeleport(int levelIndex) {
 		if (Time.timeSinceLevelLoad - (int)Time.timeSinceLevelLoad <= 0.04f) {
 			if ((int)Time.timeSinceLevelLoad % (int)(15.0f / (levelIndex * 0.5f)) == 0) {
-				transform.position = new Vector3 (player.transform.position.x, 0, player.transform.position.z - distanceFromPlayerWhileAttacking);
 				attacking = true;
+				GameObject pos = GameObject.Find ("DemonSpawn");
+				transform.position = new Vector3 (pos.transform.position.x, 0, pos.transform.position.z);
 				AttackPlayer ();
+				Handheld.Vibrate();
+				BloodSplat ();
 				player.SendMessage ("ApplyDamage", 5.0f, SendMessageOptions.DontRequireReceiver);
 			} 
 
@@ -72,21 +80,31 @@ public class Teleport : MonoBehaviour {
 		}
   }
   void Update() {
-		if (score >= 15) {
+		if (score >= 12) {
 			if (Cardboard.SDK.VRModeEnabled)
 				SceneManager.LoadScene (7);
 			else
 				SceneManager.LoadScene (8);
 			demon.SetActive (false);
 			gameObject.SetActive (false);
+
+			/*
+			if (GetComponent<Animation> ().isPlaying)
+				goto A;
+			else {
+				if (animCounter == 0) {
+					this.GetComponent<Animation> ().Play("back_fall");
+					animCounter++;
+				}
+					
+			}
+			A: {}
+			*/
 		}
 		if(Cardboard.SDK.Triggered) {
 			numOfTries -= 1;
 			if (numOfTries == 0) {
-				
-				//else if (score != 1 || score != 3 || score != 6 || score != 10 || score != 15) {
 
-				//}
 			}
 			if (score == 1) {
 				levelIndex++;
@@ -97,6 +115,7 @@ public class Teleport : MonoBehaviour {
 			} else if (score == 6) {
 				levelIndex++;
 				numOfTries = 5;
+
 			} else if (score == 10) {
 				levelIndex++;
 				numOfTries = 5;
@@ -112,8 +131,9 @@ public class Teleport : MonoBehaviour {
 				TeleportRandomly ();
 			}
 		}
-		if (!attacking)
+		if (!attacking) {
 			Normal ();
+		}
   }
   void Normal () {
 		Vector3 targetPosition = new Vector3 (player.transform.position.x,this.transform.position.y,player.transform.position.z);
@@ -162,10 +182,16 @@ public class Teleport : MonoBehaviour {
   }
 
   public void DemonHit() {
-	score += 1;
-	GameObject flicker = GameObject.Find ("GameIntroScene");
-	flicker.SendMessage ("Hit", SendMessageOptions.DontRequireReceiver);
-	if (!attacking)
-		TeleportRandomly ();
-  }
+	if (!attacking) {
+		score += 1;
+		GameObject flicker = GameObject.Find ("GameIntroScene");
+		flicker.SendMessage ("Hit", SendMessageOptions.DontRequireReceiver);
+		if (!attacking)
+			TeleportRandomly ();
+		}
+  	}
+
+	public void BloodSplat() {
+		bloodSplat.SendMessage ("StartFunction", SendMessageOptions.DontRequireReceiver);
+	}
 }
