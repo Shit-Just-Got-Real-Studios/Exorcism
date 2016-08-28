@@ -91,6 +91,7 @@
      <Compile Include="Assets\Scripts\OpenWebsite.cs" />
      <Compile Include="Assets\Scripts\PriestController.cs" />
      <Compile Include="Assets\Scripts\PriestHealthText.cs" />
+     <Compile Include="Assets\Scripts\ThunderScript.cs" />
      <Compile Include="Assets\Scripts\ToggleVR.cs" />
      <Compile Include="Assets\Scripts\ZombieController.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
